@@ -1,0 +1,45 @@
+#!/bin/bash
+#
+#  maketxt - this program adds the .txt extension to the
+#  name of any text file (as identified by 'file') in the
+#  directory given as its argument.
+#
+#  usage: maketxt name-of-directory
+#
+addtxt() {
+    if ! echo "$1" | grep -q '.txt$'; then
+	mv "$1" "$1.txt"
+    fi
+}
+
+error () {
+    echo "$prog:ERROR: $*">&2
+    echo "usage: $prog <directory>" >&2
+    exit 1
+}
+
+prog=$(basename $0)
+
+if [ $# -ne 1 ]; then
+    error "need single directory argument"
+fi
+if [ ! -d "$1" -o ! -r "$1" -o ! -x "$1" ] ; then
+    error "'$1' must be a readable executable directory"
+fi
+OIFS="$IFS"
+IFS="
+"
+list=( $(ls -d $1/* 2>/dev/null) )
+IFS="$OIFS"
+if [ -z "$list" ]; then
+    error "directory '$1' is empty"
+fi
+for file in "${list[@]}"; do
+    if [ -f "$file" ]; then
+	if file "$file" | cut -d: -f2 | grep -q "text"; then
+	    addtxt "$file"
+	fi
+    fi
+done
+
+
