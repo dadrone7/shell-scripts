@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+#  classify1.bash - this simple shell script classifies
+#  a single file (found on the command line)
+#
+#  it accepts one file argument.
+#
+progname=$(basename $0)
+if [ $# -ne 1 ]; then
+   echo "$progname: need exactly one argument"
+   exit 1
+fi
+thisfile=$1
+if [ ! -r "$thisfile" ]; then
+   echo -e "$progname: \"$thisfile\" is not readable."
+   exit 1
+fi
+
+class=$(file $thisfile)
+
+case "$class" in
+    *directory*)  echo -e "$thisfile is a directory" ;;
+    # put more cases here yourself
+    *)            echo -e "don't know what $thisfile is." ;;
+
+esac
+

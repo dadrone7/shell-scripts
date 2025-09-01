@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# revname - takes a two- or three-word name (as the arguments)
+# and reverses it, outputting the last name first. For example:
+#
+# 	$ revname Akasha Sue Waddell
+#       Waddell, Akasha Sue
+#
+# !!! YOU SHOULD ADD CODE TO THIS PROGRAM TO ENSURE THAT THE 
+#     ARGUMENTS ARE ALPHABETIC !!!
+#
+error () {
+    # error: output an error message and return
+    # the error messages contain the program name
+    # and are written to standard error
+
+    local prog=$(basename $0)
+    echo "$prog:ERROR: $*">&2
+}
+
+fatal() {
+    # fatal: output an error message and then exit
+    # the error() function is used.
+    error $*
+    # if you want to output a message about how to successfully
+    # run your program (called a 'usage message'), this would
+    # be the place to do it
+    echo -e "usage: $(basename $0) Firstname [ Middlename ] Lastname" >&2
+    # now exit with an error
+    exit 1
+}
+# if there are not 2 or 3 args, give an error message and exit.
+if [ $# -ne 2 -a $# -ne 3 ]; then
+    fatal "need 2 or 3 arguments"
+fi
+
+if [ $# -eq 3 ] ; then
+	echo "$3,$1 $2"
+else
+	echo "$2,$1"
+fi
+

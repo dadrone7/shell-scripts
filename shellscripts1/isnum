@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# isnum - just report if the input argument is a number or not.
+#
+#
+if [ $# -ne 1 ] ; then 
+    echo "isnum: need an argument"
+    exit 1
+fi
+if echo "$1" | grep "^[[:digit:]][[:digit:]]*$" >/dev/null; then
+    echo "number"
+else
+    echo "not a number"
+fi
+
+ 
